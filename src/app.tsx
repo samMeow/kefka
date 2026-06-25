@@ -1,5 +1,3 @@
 export function App() {
-  return (
-    <h1 className="font-bold text-3xl">Hello, Preact!</h1>
-  )
+  return <h1 className="font-bold text-3xl">Hello, Preact!</h1>;
 }
