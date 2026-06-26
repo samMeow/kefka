@@ -1,5 +1,26 @@
 export default {
   en: {
-    first: 'First time',
+    translation: {
+      reset: 'Reset',
+      firstSight: 'First Sight',
+      secondSight: 'Second Sight',
+      waterStack: 'Water Stack',
+      plasma: 'Plasma Bomb',
+      explosion: 'Explosion',
+      waterRing: 'Water Ring',
+      fire: 'Flame Pillar',
+      beam: 'Beam',
+      deadAlive: 'Dead or Alive',
+      look: 'Look',
+      dontLook: 'Dont Look',
+      group: 'Group',
+      alone: 'Alone',
+      move: 'Move',
+      stop: 'Stop',
+      stay: 'Stay',
+      away: 'Go Away',
+      blue: 'Blue',
+      purple: 'Purple',
+    },
   },
 };
