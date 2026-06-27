@@ -21,6 +21,8 @@ export default {
       away: 'Go Away',
       blue: 'Blue',
       purple: 'Purple',
+      first: 'First',
+      second: 'Second',
     },
   },
 };

@@ -18,9 +18,14 @@ import purple from '@/assets/purple.webp';
 import blue from '@/assets/blue.webp';
 import truth from '@/assets/truth.webp';
 import fake from '@/assets/lie.webp';
+import thunder from '@/assets/thunder.png';
+import blizzard from '@/assets/blizzard.png';
 import { cn } from './lib/utils';
 import { useTranslation } from 'react-i18next';
 import { Button } from './components/ui/button';
+
+const Truth = () => <img className="w-25" src={truth} alt="truth" />;
+const Fake = () => <img className="w-25" src={fake} alt="fake" />;
 
 const ImageLabel = ({
   className,
@@ -37,9 +42,9 @@ const ImageLabel = ({
       className,
     )}
   >
-    {children && cloneElement(children, { className: 'w-12' })}
+    {children && cloneElement(children, { className: 'w-10' })}
     {description && (
-      <span className="font-semibold mt-1 text-md">{description}</span>
+      <span className="font-semibold mt-1 text-sm">{description}</span>
     )}
   </div>
 );
@@ -142,6 +147,10 @@ const MainForm = () => {
       fire: null,
       liveMark: null,
       beam: null,
+      firstThunder: null,
+      secondThunder: null,
+      firstBlizzard: null,
+      secondBlizzard: null,
     },
     onSubmit: () => {},
   });
@@ -205,40 +214,25 @@ const MainForm = () => {
             onChange={setFieldValue}
           />
 
-          <div className="grid grid-cols-4 bg-muted border-t-4 border-primary">
-            <ImageLabel description={t('waterRing')}>
-              <img src={waterRing} alt="water ring" />
-            </ImageLabel>
-            <TruthFakeGroup
-              className="col-span-2 grid grid-cols-subgrid"
-              name="waterRing"
-              value={values.waterRing}
-              onChange={setFieldValue}
-            />
-            <div className="flex items-center justify-center border-l-2">
-              <span className="font-bold text-3xl">
-                {values.waterRing === 'truth' && t('stay')}
-                {values.waterRing === 'fake' && t('away')}
-              </span>
-            </div>
-          </div>
-          <div className="grid grid-cols-4 bg-background">
-            <ImageLabel description={t('fire')}>
-              <img src={fire} alt="flame pillar" />
-            </ImageLabel>
-            <TruthFakeGroup
-              className="col-span-2 grid grid-cols-subgrid"
-              name="fire"
-              value={values.fire}
-              onChange={setFieldValue}
-            />
-            <div className="flex items-center justify-center border-l-2">
-              <span className="font-bold text-3xl">
-                {values.fire === 'truth' && t('away')}
-                {values.fire === 'fake' && t('stay')}
-              </span>
-            </div>
-          </div>
+          <Group
+            className="border-t-4 border-primary"
+            name="waterRing"
+            imgSrc={waterRing}
+            description={t('waterRing')}
+            value={values.waterRing}
+            truthText={t('stay')}
+            fakeText={t('away')}
+            onChange={setFieldValue}
+          />
+          <Group
+            name="fire"
+            imgSrc={fire}
+            description={t('fire')}
+            value={values.fire}
+            truthText={t('away')}
+            fakeText={t('stay')}
+            onChange={setFieldValue}
+          />
 
           <div className="grid grid-cols-4 bg-muted border-t-4 border-primary">
             <div className="col-span-3 grid grid-cols-2">
@@ -337,6 +331,78 @@ const MainForm = () => {
                   return isBlue === isTruth ? t('blue') : t('purple');
                 })()}
               </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-6 bg-primary-background border-t-4 border-primary">
+            <div className="font-bold text-lg col-span-2 col-start-2 text-center border-l-2">
+              {t('first')}
+            </div>
+            <div className="font-bold text-lg col-span-2 text-center border-l-2">
+              {t('second')}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-6 bg-primary-background">
+            <ImageLabel className="border-none">
+              <img src={thunder} alt="thunder" />
+            </ImageLabel>
+            <TruthFakeGroup
+              className="col-span-2 grid grid-cols-subgrid border-l-2"
+              name="firstThunder"
+              value={values.firstThunder}
+              onChange={setFieldValue}
+            />
+            <TruthFakeGroup
+              className="col-span-2 grid grid-cols-subgrid border-l-2"
+              name="secondThunder"
+              value={values.secondThunder}
+              onChange={setFieldValue}
+            />
+            <div className="flex flex-col gap-4 items-center justify-center border-l-2">
+              {(() => {
+                if (
+                  values.firstThunder === null ||
+                  values.secondThunder === null
+                )
+                  return null;
+                return values.firstThunder === values.secondThunder ? (
+                  <Truth />
+                ) : (
+                  <Fake />
+                );
+              })()}
+            </div>
+          </div>
+          <div className="grid grid-cols-6 bg-muted">
+            <ImageLabel className="border-none">
+              <img src={blizzard} alt="blizzard" />
+            </ImageLabel>
+            <TruthFakeGroup
+              className="col-span-2 grid grid-cols-subgrid border-l-2"
+              name="firstBlizzard"
+              value={values.firstBlizzard}
+              onChange={setFieldValue}
+            />
+            <TruthFakeGroup
+              className="col-span-2 grid grid-cols-subgrid border-l-2"
+              name="secondBlizzard"
+              value={values.secondBlizzard}
+              onChange={setFieldValue}
+            />
+            <div className="flex flex-col gap-4 items-center justify-center border-l-2">
+              {(() => {
+                if (
+                  values.firstBlizzard === null ||
+                  values.secondBlizzard === null
+                )
+                  return null;
+                return values.firstBlizzard === values.secondBlizzard ? (
+                  <Truth />
+                ) : (
+                  <Fake />
+                );
+              })()}
             </div>
           </div>
         </CardContent>
