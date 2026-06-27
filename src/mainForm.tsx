@@ -33,7 +33,7 @@ const ImageLabel = ({
 }) => (
   <div
     className={cn(
-      'flex flex-col items-center justify-center p-4 border-r-2',
+      'flex flex-col items-center justify-center p-2 border-r-2',
       className,
     )}
   >
@@ -67,7 +67,7 @@ const TruthFakeGroup = ({
         htmlFor={`${name}-truth`}
       >
         <FieldContent className="flex h-full items-center justify-center p-2">
-          <img className="w-30" src={truth} alt="truth" />
+          <img className="w-25" src={truth} alt="truth" />
         </FieldContent>
         <RadioGroupItem value="truth" id={`${name}-truth`} className="hidden" />
       </FieldLabel>
@@ -78,12 +78,55 @@ const TruthFakeGroup = ({
         htmlFor={`${name}-fake`}
       >
         <FieldContent className="flex h-full items-center justify-center p-2">
-          <img className="w-30" src={fake} alt="fake" />
+          <img className="w-25" src={fake} alt="fake" />
         </FieldContent>
         <RadioGroupItem value="fake" id={`${name}-fake`} className="hidden" />
       </FieldLabel>
     </Field>
   </RadioGroup>
+);
+
+const Group = ({
+  className,
+  name,
+  imgSrc,
+  description,
+  value,
+  truthText,
+  fakeText,
+  onChange,
+}: {
+  className?: string;
+  name: string;
+  imgSrc: string;
+  description: string;
+  value?: string | null;
+  truthText: string;
+  fakeText: string;
+  onChange: (name: string, value: string) => void;
+}) => (
+  <div
+    className={cn(
+      'grid grid-cols-4 odd:bg-background even:bg-muted',
+      className,
+    )}
+  >
+    <ImageLabel description={description}>
+      <img src={imgSrc} alt={description} />
+    </ImageLabel>
+    <TruthFakeGroup
+      className="col-span-2 grid grid-cols-subgrid"
+      name={name}
+      value={value}
+      onChange={onChange}
+    />
+    <div className="flex items-center justify-center border-l-2">
+      <span className="font-bold text-3xl">
+        {value === 'truth' && truthText}
+        {value === 'fake' && fakeText}
+      </span>
+    </div>
+  </div>
 );
 
 const MainForm = () => {
@@ -104,7 +147,7 @@ const MainForm = () => {
   });
 
   return (
-    <form className="w-full md:w-300 my-8 m-auto" onSubmit={handleSubmit}>
+    <form className="w-full md:w-300 my-4 m-auto" onSubmit={handleSubmit}>
       <div className="flex justify-end">
         <Button
           size="lg"
@@ -116,91 +159,51 @@ const MainForm = () => {
       </div>
       <Card>
         <CardContent className="p-0 m-0">
-          <div className="grid grid-cols-4 bg-background">
-            <ImageLabel description={t('firstSight')}>
-              <img src={eye} alt="sight" />
-            </ImageLabel>
-            <TruthFakeGroup
-              className="col-span-2 grid grid-cols-subgrid"
-              name="firstSight"
-              value={values.firstSight}
-              onChange={setFieldValue}
-            />
-            <div className="flex items-center justify-center border-l-2">
-              <span className="font-bold text-3xl">
-                {values.firstSight === 'truth' && t('dontLook')}
-                {values.firstSight === 'fake' && t('look')}
-              </span>
-            </div>
-          </div>
-          <div className="grid grid-cols-4 bg-muted">
-            <ImageLabel description={t('secondSight')}>
-              <img src={eye} alt="sight" />
-            </ImageLabel>
-            <TruthFakeGroup
-              className="col-span-2 grid grid-cols-subgrid"
-              name="secondSight"
-              value={values.secondSight}
-              onChange={setFieldValue}
-            />
-            <div className="flex items-center justify-center border-l-2">
-              <span className="font-bold text-3xl">
-                {values.secondSight === 'truth' && t('dontLook')}
-                {values.secondSight === 'fake' && t('look')}
-              </span>
-            </div>
-          </div>
-          <div className="grid grid-cols-4 bg-background">
-            <ImageLabel description={t('plasma')}>
-              <img src={plasma} alt="plasma" />
-            </ImageLabel>
-            <TruthFakeGroup
-              className="col-span-2 grid grid-cols-subgrid"
-              name="plasma"
-              value={values.plasma}
-              onChange={setFieldValue}
-            />
-            <div className="flex items-center justify-center border-l-2">
-              <span className="font-bold text-3xl">
-                {values.plasma === 'truth' && t('stop')}
-                {values.plasma === 'fake' && t('move')}
-              </span>
-            </div>
-          </div>
-          <div className="grid grid-cols-4 bg-muted">
-            <ImageLabel description={t('waterStack')}>
-              <img src={waterStack} alt="water stack" />
-            </ImageLabel>
-            <TruthFakeGroup
-              className="col-span-2 grid grid-cols-subgrid"
-              name="waterStack"
-              value={values.waterStack}
-              onChange={setFieldValue}
-            />
-            <div className="flex items-center justify-center border-l-2">
-              <span className="font-bold text-3xl">
-                {values.waterStack === 'truth' && t('group')}
-                {values.waterStack === 'fake' && t('alone')}
-              </span>
-            </div>
-          </div>
-          <div className="grid grid-cols-4 bg-background">
-            <ImageLabel description={t('explosion')}>
-              <img src={explosion} alt="explosion" />
-            </ImageLabel>
-            <TruthFakeGroup
-              className="col-span-2 grid grid-cols-subgrid"
-              name="explosion"
-              value={values.explosion}
-              onChange={setFieldValue}
-            />
-            <div className="flex items-center justify-center border-l-2">
-              <span className="font-bold text-3xl">
-                {values.explosion === 'truth' && t('alone')}
-                {values.explosion === 'fake' && t('group')}
-              </span>
-            </div>
-          </div>
+          <Group
+            name="firstSight"
+            imgSrc={eye}
+            description={t('firstSight')}
+            value={values.firstSight}
+            truthText={t('dontLook')}
+            fakeText={t('look')}
+            onChange={setFieldValue}
+          />
+          <Group
+            name="secondSight"
+            imgSrc={eye}
+            description={t('secondSight')}
+            value={values.secondSight}
+            truthText={t('dontLook')}
+            fakeText={t('look')}
+            onChange={setFieldValue}
+          />
+          <Group
+            name="plasma"
+            imgSrc={plasma}
+            description={t('plasma')}
+            value={values.plasma}
+            truthText={t('stop')}
+            fakeText={t('move')}
+            onChange={setFieldValue}
+          />
+          <Group
+            name="waterStack"
+            imgSrc={waterStack}
+            description={t('waterStack')}
+            value={values.waterStack}
+            truthText={t('group')}
+            fakeText={t('alone')}
+            onChange={setFieldValue}
+          />
+          <Group
+            name="explosion"
+            imgSrc={explosion}
+            description={t('explosion')}
+            value={values.explosion}
+            truthText={t('alone')}
+            fakeText={t('group')}
+            onChange={setFieldValue}
+          />
 
           <div className="grid grid-cols-4 bg-muted border-t-4 border-primary">
             <ImageLabel description={t('waterRing')}>
@@ -326,7 +329,7 @@ const MainForm = () => {
                 {(() => {
                   if (values.liveMark === null || values.beam === null)
                     return undefined;
-                  const isBlue = ['blue-alive', 'purple-dead'].includes(
+                  const isBlue = ['blue-dead', 'purple-alive'].includes(
                     values.liveMark,
                   );
                   const isTruth = values.beam === 'truth';
